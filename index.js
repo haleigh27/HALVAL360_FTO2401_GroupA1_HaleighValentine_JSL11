@@ -29,6 +29,8 @@ const elements = {
     themeSwitch: document.querySelector('#switch'),
     createNewTaskBtn: document.querySelector('#create-task-btn'),
     modalWindow: document.querySelector('.modal-window'),
+    //Elements for toggleSidebar function
+    sideBar: document.querySelector('.side-bar'),
 };
 
 let activeBoard = '';
@@ -212,7 +214,13 @@ function addTask(event) {
     }
 }
 
-function toggleSidebar(show) {}
+function toggleSidebar(show) {
+    if (show) {
+        elements.sideBar.style.display = 'block';
+    } else {
+        elements.sideBar.style.display = 'none';
+    }
+}
 
 function toggleTheme() {}
 
