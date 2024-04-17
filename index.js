@@ -24,7 +24,15 @@ function initializeData() {
 
 // TASK: Get elements from the DOM
 const elements = {
-  headerBoardName: document.querySelector(".header-board-name")
+  headerBoardName: document.querySelector(".header-board-name"), //both class and id
+  columnDivs: document.querySelector(".column-div"),
+  editTaskModal: document.querySelector(".edit-task-modal-window"),
+  filterDiv: document.querySelector("#filterDiv"),
+  hideSideBarBtn: document.querySelector("#hide-side-bar-btn"),
+  showSideBarBtn: document.querySelector("#show-side-bar-btn"),
+  themeSwitch: document.querySelector("#switch"),
+  createNewTaskBtn: document.querySelector("#create-task-btn"),
+  modalWindow: document.querySelector(".modal-window"),
 }
 
 let activeBoard = ""
