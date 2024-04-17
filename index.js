@@ -21,7 +21,7 @@ function initializeData() {
 // TASK: Get elements from the DOM
 const elements = {
     headerBoardName: document.querySelector('.header-board-name'), //both class and id
-    columnDivs: document.querySelector('.column-div'),
+    columnDivs: document.querySelectorAll('.column-div'),
     editTaskModal: document.querySelector('.edit-task-modal-window'),
     filterDiv: document.querySelector('#filterDiv'),
     hideSideBarBtn: document.querySelector('#hide-side-bar-btn'),
