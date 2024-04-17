@@ -112,11 +112,11 @@ function refreshTasksUI() {
 // Styles the active board by adding an active class
 // TASK: Fix Bugs
 function styleActiveBoard(boardName) {
-    document.querySelectorAll('.board-btn').foreach((btn) => {
+    document.querySelectorAll('.board-btn').forEach((btn) => {
         if (btn.textContent === boardName) {
-            btn.add('active');
+            btn.classList.add('active');
         } else {
-            btn.remove('active');
+            btn.classList.remove('active');
         }
     });
 }
