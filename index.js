@@ -48,8 +48,11 @@ function fetchAndDisplayBoardsAndTasks() {
     const boards = [...new Set(tasks.map((task) => task.board).filter(Boolean))];
     displayBoards(boards);
     if (boards.length > 0) {
-        const localStorageBoard = JSON.parse(localStorage.getItem('activeBoard'));
+        //FIXME: Remove: const localStorageBoard = JSON.parse(localStorage.getItem('activeBoard'));
+        const localStorageBoard = localStorage.getItem('activeBoard');
         activeBoard = localStorageBoard ? localStorageBoard : boards[0];
+        //Used to set activeBoard when page runs initially and activeBoard is boards[0]
+        localStorage.setItem('activeBoard', activeBoard);
         elements.headerBoardName.textContent = activeBoard;
         styleActiveBoard(activeBoard);
         refreshTasksUI();
@@ -222,7 +225,7 @@ function addTask(event) {
         title: elements.titleInput.value,
         description: elements.descInput.value,
         status: elements.selectStatus.value,
-        board: JSON.parse(localStorage.getItem('activeBoard')),
+        board: localStorage.getItem('activeBoard'),
     };
 
     const newTask = createNewTask(task); // Returns the newTask object with id property.
