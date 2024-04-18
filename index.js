@@ -31,6 +31,8 @@ const elements = {
     modalWindow: document.querySelector('.modal-window'),
     //Elements for toggleSidebar function
     sideBar: document.querySelector('.side-bar'),
+    //Element for Add New task btn
+    addNewTaskBtn: document.querySelector('#add-new-task-btn'),
 };
 
 let activeBoard = '';
@@ -178,10 +180,17 @@ function setupEventListeners() {
     elements.themeSwitch.addEventListener('change', toggleTheme);
 
     // Show Add New Task Modal event listener
+    elements.addNewTaskBtn.addEventListener('click', () => {
+        toggleModal(true);
+        elements.filterDiv.style.display = 'block'; // Also show the filter overlay
+    });
+
+    /* FIXME: Delete if not used later
     elements.createNewTaskBtn.addEventListener('click', () => {
         toggleModal(true);
         elements.filterDiv.style.display = 'block'; // Also show the filter overlay
     });
+*/
 
     // Add new task form submission event listener
     elements.modalWindow.addEventListener('submit', (event) => {
