@@ -238,8 +238,12 @@ function addTask(event) {
 function toggleSidebar(show) {
     if (show) {
         elements.sideBar.style.display = 'block';
+        elements.showSideBarBtn.style.display = 'none';
+        localStorage.setItem('showSideBar', 'true');
     } else {
         elements.sideBar.style.display = 'none';
+        elements.showSideBarBtn.style.display = 'block';
+        localStorage.setItem('showSideBar', 'false');
     }
 }
 
