@@ -17,7 +17,7 @@ function initializeData() {
         console.log('Data already exists in localStorage');
     }
 }
-
+initializeData();
 // TASK: Get elements from the DOM
 const elements = {
     headerBoardName: document.querySelector('.header-board-name'), //both class and id
@@ -33,6 +33,10 @@ const elements = {
     sideBar: document.querySelector('.side-bar'),
     //Element for Add New task btn
     addNewTaskBtn: document.querySelector('#add-new-task-btn'),
+    //Elements for new task input fields
+    titleInput: document.querySelector('#title-input'),
+    descInput: document.querySelector('#desc-input'),
+    selectStatus: document.querySelector('#select-status'),
 };
 
 let activeBoard = '';
@@ -194,6 +198,8 @@ function setupEventListeners() {
 
     // Add new task form submission event listener
     elements.modalWindow.addEventListener('submit', (event) => {
+        //FIXME: Remove console.log later
+        console.log(event);
         addTask(event);
     });
 }
@@ -212,8 +218,14 @@ function addTask(event) {
     event.preventDefault();
 
     //Assign user input to the task object
-    const task = {};
-    const newTask = createNewTask(task);
+    const task = {
+        title: elements.titleInput.value,
+        description: elements.descInput.value,
+        status: elements.selectStatus.value,
+        board: JSON.parse(localStorage.getItem('activeBoard')),
+    };
+
+    const newTask = createNewTask(task); // Returns the newTask object with id property.
     if (newTask) {
         addTaskToUI(newTask);
         toggleModal(false);
@@ -270,4 +282,6 @@ function init() {
     const isLightTheme = localStorage.getItem('light-theme') === 'enabled';
     document.body.classList.toggle('light-theme', isLightTheme);
     fetchAndDisplayBoardsAndTasks(); // Initial display of boards and tasks
+    //FIXME: Delete if not used later
+    //initializeData();
 }
