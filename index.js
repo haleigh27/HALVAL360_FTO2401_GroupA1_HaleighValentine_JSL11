@@ -17,7 +17,7 @@ function initializeData() {
         console.log('Data already exists in localStorage');
     }
 }
-initializeData();
+
 // TASK: Get elements from the DOM
 const elements = {
     headerBoardName: document.querySelector('.header-board-name'), //both class and id
@@ -44,9 +44,10 @@ let activeBoard = '';
 // Extracts unique board names from tasks
 // TASK: FIX BUGS
 function fetchAndDisplayBoardsAndTasks() {
-    const tasks = getTasks();
-    const boards = [...new Set(tasks.map((task) => task.board).filter(Boolean))];
-    displayBoards(boards);
+    // -- FETCH BOARDS --
+    const tasks = getTasks(); // * Returns an array of task objects in local storage
+    const boards = [...new Set(tasks.map((task) => task.board).filter(Boolean))]; // * Array of unique boards
+    displayBoards(boards); // * Array of unique boards in local storage
     if (boards.length > 0) {
         //FIXME: Remove: const localStorageBoard = JSON.parse(localStorage.getItem('activeBoard'));
         const localStorageBoard = localStorage.getItem('activeBoard');
@@ -62,8 +63,9 @@ function fetchAndDisplayBoardsAndTasks() {
 // Creates different boards in the DOM
 // TASK: Fix Bugs
 function displayBoards(boards) {
+    // * boards parameter is an array of unique boards in local storage
     const boardsContainer = document.getElementById('boards-nav-links-div');
-    boardsContainer.innerHTML = ''; // Clears the container
+    boardsContainer.innerHTML = ''; // Clears the container which holds the boards in the side-panel
     boards.forEach((board) => {
         const boardElement = document.createElement('button');
         boardElement.textContent = board;
@@ -83,10 +85,12 @@ function displayBoards(boards) {
 // TASK: Fix Bugs
 function filterAndDisplayTasksByBoard(boardName) {
     const tasks = getTasks(); // Fetch tasks from a simulated local storage function
-    const filteredTasks = tasks.filter((task) => task.board === boardName); //returns an array of all tasks with matching board value
+    const filteredTasks = tasks.filter((task) => task.board === boardName); // * Returns an array of all tasks with matching board value
 
+    //TODO:
     // Ensure the column titles are set outside of this function or correctly initialized before this function runs
 
+    //FIXME: Overrides the current innerHTML content of the status headings, dot and tasks-container
     elements.columnDivs.forEach((column) => {
         const status = column.getAttribute('data-status');
         // Reset column content while preserving the column title
@@ -98,6 +102,9 @@ function filterAndDisplayTasksByBoard(boardName) {
         const tasksContainer = document.createElement('div');
         column.appendChild(tasksContainer);
 
+        //New innerHTML ends here
+
+        console.log(filteredTasks);
         filteredTasks
             .filter((task) => task.status === status)
             .forEach((task) => {
@@ -116,6 +123,7 @@ function filterAndDisplayTasksByBoard(boardName) {
     });
 }
 
+///////
 function refreshTasksUI() {
     filterAndDisplayTasksByBoard(activeBoard);
 }
@@ -284,6 +292,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function init() {
+    initializeData();
     setupEventListeners();
     const showSidebar = localStorage.getItem('showSideBar') === 'true';
     toggleSidebar(showSidebar);
