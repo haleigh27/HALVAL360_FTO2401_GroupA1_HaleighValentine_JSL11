@@ -37,6 +37,9 @@ const elements = {
     titleInput: document.querySelector('#title-input'),
     descInput: document.querySelector('#desc-input'),
     selectStatus: document.querySelector('#select-status'),
+    //Elements use to change theme
+    body: document.querySelector('body'),
+    logo: document.querySelector('#logo'),
 };
 
 let activeBoard = '';
@@ -259,7 +262,16 @@ function toggleSidebar(show) {
     }
 }
 
-function toggleTheme() {}
+function toggleTheme() {
+    elements.body.classList.toggle('light-theme');
+    if (elements.body.classList.contains('light-theme')) {
+        localStorage.setItem('light-theme', 'enabled');
+        elements.logo.src = '/assets/logo-light.svg';
+    } else {
+        localStorage.setItem('light-theme', 'disabled');
+        elements.logo.src = '/assets/logo-dark.svg';
+    }
+}
 
 function openEditTaskModal(task) {
     // Set task details in modal inputs
@@ -298,6 +310,10 @@ function init() {
     toggleSidebar(showSidebar);
     const isLightTheme = localStorage.getItem('light-theme') === 'enabled';
     document.body.classList.toggle('light-theme', isLightTheme);
+    if (isLightTheme) {
+        elements.themeSwitch.checked = true;
+        elements.logo.src = '/assets/logo-light.svg';
+    }
     fetchAndDisplayBoardsAndTasks(); // Initial display of boards and tasks
     //FIXME: Delete if not used later
     //initializeData();
