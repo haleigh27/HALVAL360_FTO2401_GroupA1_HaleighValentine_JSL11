@@ -55,6 +55,7 @@ function fetchAndDisplayBoardsAndTasks() {
         //FIXME: Remove: const localStorageBoard = JSON.parse(localStorage.getItem('activeBoard'));
         const localStorageBoard = localStorage.getItem('activeBoard');
         activeBoard = localStorageBoard ? localStorageBoard : boards[0];
+        console.log(activeBoard);
         //Used to set activeBoard when page runs initially and activeBoard is boards[0]
         localStorage.setItem('activeBoard', activeBoard);
         elements.headerBoardName.textContent = activeBoard;
@@ -77,7 +78,7 @@ function displayBoards(boards) {
             elements.headerBoardName.textContent = board;
             filterAndDisplayTasksByBoard(board);
             activeBoard = board; //assigns active board
-            localStorage.setItem('activeBoard', JSON.stringify(activeBoard));
+            localStorage.setItem('activeBoard', activeBoard);
             styleActiveBoard(activeBoard);
         });
         boardsContainer.appendChild(boardElement);
@@ -134,6 +135,7 @@ function refreshTasksUI() {
 // Styles the active board by adding an active class
 // TASK: Fix Bugs
 function styleActiveBoard(boardName) {
+    console.log(boardName);
     document.querySelectorAll('.board-btn').forEach((btn) => {
         if (btn.textContent === boardName) {
             btn.classList.add('active');
