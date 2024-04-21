@@ -40,6 +40,14 @@ const elements = {
     //Elements use to change theme
     body: document.querySelector('body'),
     logo: document.querySelector('#logo'),
+    //Elements to edit task
+    editTaskTitle: document.querySelector('#edit-task-title-input'),
+    editTaskDesc: document.querySelector('#edit-task-desc-input'),
+    editSelectStatus: document.querySelector('#edit-select-status'),
+
+    saveTaskChangesBtn: document.querySelector('#save-task-changes-btn'),
+    cancelEditBtn: document.querySelector('#cancel-edit-btn'),
+    deleteTaskBtn: document.querySelector('#delete-task-btn'),
 };
 
 let activeBoard = '';
@@ -118,7 +126,8 @@ function filterAndDisplayTasksByBoard(boardName) {
 
                 // Listen for a click event on each task and open a modal
                 taskElement.addEventListener('click', () => {
-                    openEditTaskModal(task);
+                    openEditTaskModal(task); // task object of selected task
+                    console.log(task);
                 });
 
                 tasksContainer.appendChild(taskElement);
@@ -275,14 +284,25 @@ function toggleTheme() {
 
 function openEditTaskModal(task) {
     // Set task details in modal inputs
-
-    // Get button elements from the task modal
+    console.log(task.title);
+    elements.editTaskTitle.defaultValue = task.title; // .value also works
+    elements.editTaskDesc.defaultValue = task.description;
+    elements.editSelectStatus.value = task.status;
 
     // Call saveTaskChanges upon click of Save Changes button
-
+    elements.saveTaskChangesBtn.addEventListener('click', () => {
+        saveTaskChanges(task.id);
+        toggleModal(false, elements.editTaskModal);
+    });
     // Delete task using a helper function and close the task modal
+    elements.deleteTaskBtn.addEventListener('click', () => {
+        deleteTask(task.id);
+        toggleModal(false, elements.editTaskModal);
+        refreshTasksUI();
+    });
 
-    toggleModal(true, elements.editTaskModal); // Show the edit task modal
+    // Show the edit task modal
+    toggleModal(true, elements.editTaskModal);
 }
 
 function saveTaskChanges(taskId) {
