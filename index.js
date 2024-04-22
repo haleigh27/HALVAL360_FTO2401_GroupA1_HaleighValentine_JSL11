@@ -20,6 +20,7 @@ function initializeData() {
 
 // TASK: Get elements from the DOM
 const elements = {
+    //Elements for HTML structure
     headerBoardName: document.querySelector('.header-board-name'), //both class and id
     columnDivs: document.querySelectorAll('.column-div'),
 
@@ -48,6 +49,7 @@ const elements = {
 
     body: document.querySelector('body'),
     logo: document.querySelector('#logo'),
+
     //Elements to edit task
     editTaskModal: document.querySelector('.edit-task-modal-window'),
 
@@ -70,14 +72,12 @@ function fetchAndDisplayBoardsAndTasks() {
     const boards = [...new Set(tasks.map((task) => task.board).filter(Boolean))]; // * Array of unique boards
     displayBoards(boards); // * Array of unique boards in local storage
     if (boards.length > 0) {
-        //FIXME: Remove: const localStorageBoard = JSON.parse(localStorage.getItem('activeBoard'));
         const localStorageBoard = localStorage.getItem('activeBoard');
         activeBoard = localStorageBoard ? localStorageBoard : boards[0];
         //Used to set activeBoard when page runs initially and activeBoard is boards[0]
         localStorage.setItem('activeBoard', activeBoard);
         elements.headerBoardName.textContent = activeBoard;
         styleActiveBoard(activeBoard);
-        console.log('from fetchAndDisplayBoardsAndTasks');
         refreshTasksUI();
     }
 }
@@ -94,7 +94,6 @@ function displayBoards(boards) {
         boardElement.classList.add('board-btn');
         boardElement.addEventListener('click', () => {
             elements.headerBoardName.textContent = board;
-            console.log('from displayBoards');
             filterAndDisplayTasksByBoard(board);
             activeBoard = board; //assigns active board
             localStorage.setItem('activeBoard', activeBoard);
@@ -127,7 +126,6 @@ function filterAndDisplayTasksByBoard(boardName) {
         column.appendChild(tasksContainer);
 
         //New innerHTML ends here
-        console.log(filteredTasks);
         filteredTasks
             .filter((task) => task.status === status)
             .forEach((task) => {
@@ -139,7 +137,6 @@ function filterAndDisplayTasksByBoard(boardName) {
                 // Listen for a click event on each task and open a modal
                 taskElement.addEventListener('click', () => {
                     openEditTaskModal(task); // task object of selected task
-                    console.log(task);
                 });
 
                 tasksContainer.appendChild(taskElement);
@@ -147,9 +144,7 @@ function filterAndDisplayTasksByBoard(boardName) {
     });
 }
 
-///////
 function refreshTasksUI() {
-    console.log('from refreshTasksUI');
     filterAndDisplayTasksByBoard(activeBoard);
 }
 
@@ -220,17 +215,8 @@ function setupEventListeners() {
         elements.filterDiv.style.display = 'block'; // Also show the filter overlay
     });
 
-    /* FIXME: Delete if not used later
-    elements.createNewTaskBtn.addEventListener('click', () => {
-        toggleModal(true);
-        elements.filterDiv.style.display = 'block'; // Also show the filter overlay
-    });
-*/
-
     // Add new task form submission event listener
     elements.modalWindow.addEventListener('submit', (event) => {
-        //FIXME: Remove console.log later
-        console.log(event);
         addTask(event);
     });
 }
@@ -262,7 +248,6 @@ function addTask(event) {
         toggleModal(false);
         elements.filterDiv.style.display = 'none'; // Also hide the filter overlay
         event.target.reset();
-        console.log('from newTask');
         refreshTasksUI();
     }
 }
@@ -271,7 +256,7 @@ function toggleSidebar(show) {
     if (show) {
         elements.sideBar.style.display = 'flex';
         elements.showSideBarBtn.style.display = 'none';
-        elements.hideSideBarDiv.style.display = 'flex'; // Displays Hide Sidebar button on smaller
+        elements.hideSideBarDiv.style.display = 'flex'; // Displays Hide Sidebar button on smaller screens (TODO:change to mediaQuery??)
         localStorage.setItem('showSideBar', 'true');
     } else {
         elements.sideBar.style.display = 'none';
@@ -295,8 +280,10 @@ function toggleTheme() {
 function openEditTaskModal(task) {
     // Show the edit task modal
     toggleModal(true, elements.editTaskModal);
+    //TODO: Add the filterDiv later
+    //elements.filterDiv.style.display = 'block';
+
     // Set task details in modal inputs
-    console.log(task.title);
     elements.editTaskTitle.value = task.title; // .value also works
     elements.editTaskDesc.value = task.description;
     elements.editSelectStatus.value = task.status;
@@ -318,7 +305,6 @@ function openEditTaskModal(task) {
     const onDeleteTask = () => {
         deleteTask(task.id);
         toggleModal(false, elements.editTaskModal);
-        console.log('from openEditTaskModal');
         refreshTasksUI();
 
         // Remove event listeners when modal is closed
@@ -329,9 +315,7 @@ function openEditTaskModal(task) {
 
     elements.deleteTaskBtn.addEventListener('click', onDeleteTask);
 
-    // Cancel editing task event listener
-    //const cancelEditBtn = document.getElementById('cancel-edit-btn');
-
+    // Cancel editing task
     const cancelEdit = () => {
         toggleModal(false, elements.editTaskModal);
 
@@ -347,22 +331,20 @@ function openEditTaskModal(task) {
 function saveTaskChanges(taskId) {
     // Object with the updated task details
     const updatedTask = {
-        //id: taskId,
-        title: elements.editTaskTitle.value, // .value also works
+        //id: taskId, TODO: remove
+        title: elements.editTaskTitle.value,
         description: elements.editTaskDesc.value,
         status: elements.editSelectStatus.value,
         board: localStorage.getItem('activeBoard'),
     };
 
     // Update task using a helper function
-    //TODO: Choose a function: patchTask() or PutTask()
-    //putTask(taskId, updatedTask); //uses location.reload() so remove refreshTasksUI() below & comment id property in updated tasks back in
-    patchTask(taskId, updatedTask); //Remember to remove id property from updatedTask object and run refreshTaskUI()
+    patchTask(taskId, updatedTask); // TODO: Remember to remove id property from updatedTask object and run refreshTaskUI()
 
     // Close the modal and refresh the UI to reflect the changes
     toggleModal(false, elements.editTaskModal);
 
-    refreshTasksUI(); //need this line when using patchTask() as it does not use location.reload()
+    refreshTasksUI(); //need this line to refresh task UI when using patchTask() as it does not use location.reload()
 }
 
 /*************************************************************************************************************************************************/
@@ -383,6 +365,4 @@ function init() {
         elements.logo.src = '/assets/logo-light.svg';
     }
     fetchAndDisplayBoardsAndTasks(); // Initial display of boards and tasks
-    //FIXME: Delete if not used later
-    //initializeData();
 }
