@@ -285,8 +285,8 @@ function toggleTheme() {
 function openEditTaskModal(task) {
     // Set task details in modal inputs
     console.log(task.title);
-    elements.editTaskTitle.defaultValue = task.title; // .value also works
-    elements.editTaskDesc.defaultValue = task.description;
+    elements.editTaskTitle.value = task.title; // .value also works
+    elements.editTaskDesc.value = task.description;
     elements.editSelectStatus.value = task.status;
 
     // Call saveTaskChanges upon click of Save Changes button
@@ -306,15 +306,24 @@ function openEditTaskModal(task) {
 }
 
 function saveTaskChanges(taskId) {
-    // Get new user inputs
+    // Object with the updated task details
+    const updatedTask = {
+        //id: taskId,
+        title: elements.editTaskTitle.value, // .value also works
+        description: elements.editTaskDesc.value,
+        status: elements.editSelectStatus.value,
+        board: localStorage.getItem('activeBoard'),
+    };
 
-    // Create an object with the updated task details
-
-    // Update task using a hlper functoin
+    // Update task using a helper function
+    //TODO: Choose a function: patchTask() or PutTask()
+    //putTask(taskId, updatedTask); //uses location.reload() so remove refreshTasksUI() below & comment id property in updated tasks back in
+    patchTask(taskId, updatedTask); //Remember to remove id property from updatedTask object and run refreshTaskUI()
 
     // Close the modal and refresh the UI to reflect the changes
+    toggleModal(false, elements.editTaskModal);
 
-    refreshTasksUI();
+    refreshTasksUI(); //need this line when using patchTask() as it does not use location.reload()
 }
 
 /*************************************************************************************************************************************************/
