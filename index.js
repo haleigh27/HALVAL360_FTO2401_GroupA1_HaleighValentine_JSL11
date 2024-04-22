@@ -67,6 +67,7 @@ function fetchAndDisplayBoardsAndTasks() {
         localStorage.setItem('activeBoard', activeBoard);
         elements.headerBoardName.textContent = activeBoard;
         styleActiveBoard(activeBoard);
+        console.log('from fetchAndDisplayBoardsAndTasks');
         refreshTasksUI();
     }
 }
@@ -83,6 +84,7 @@ function displayBoards(boards) {
         boardElement.classList.add('board-btn');
         boardElement.addEventListener('click', () => {
             elements.headerBoardName.textContent = board;
+            console.log('from displayBoards');
             filterAndDisplayTasksByBoard(board);
             activeBoard = board; //assigns active board
             localStorage.setItem('activeBoard', activeBoard);
@@ -115,7 +117,7 @@ function filterAndDisplayTasksByBoard(boardName) {
         column.appendChild(tasksContainer);
 
         //New innerHTML ends here
-
+        console.log(filteredTasks);
         filteredTasks
             .filter((task) => task.status === status)
             .forEach((task) => {
@@ -137,6 +139,7 @@ function filterAndDisplayTasksByBoard(boardName) {
 
 ///////
 function refreshTasksUI() {
+    console.log('from refreshTasksUI');
     filterAndDisplayTasksByBoard(activeBoard);
 }
 
@@ -177,12 +180,6 @@ function addTaskToUI(task) {
 }
 
 function setupEventListeners() {
-    // Cancel editing task event listener
-    const cancelEditBtn = document.getElementById('cancel-edit-btn');
-    cancelEditBtn.addEventListener('click', () => {
-        toggleModal(false, elements.editTaskModal);
-    });
-
     // Cancel adding new task event listener
     const cancelAddTaskBtn = document.getElementById('cancel-add-task-btn');
     cancelAddTaskBtn.addEventListener('click', () => {
@@ -255,6 +252,7 @@ function addTask(event) {
         toggleModal(false);
         elements.filterDiv.style.display = 'none'; // Also hide the filter overlay
         event.target.reset();
+        console.log('from newTask');
         refreshTasksUI();
     }
 }
@@ -283,6 +281,8 @@ function toggleTheme() {
 }
 
 function openEditTaskModal(task) {
+    // Show the edit task modal
+    toggleModal(true, elements.editTaskModal);
     // Set task details in modal inputs
     console.log(task.title);
     elements.editTaskTitle.value = task.title; // .value also works
@@ -290,19 +290,46 @@ function openEditTaskModal(task) {
     elements.editSelectStatus.value = task.status;
 
     // Call saveTaskChanges upon click of Save Changes button
-    elements.saveTaskChangesBtn.addEventListener('click', () => {
+    const saveChanges = () => {
         saveTaskChanges(task.id);
         toggleModal(false, elements.editTaskModal);
-    });
+
+        // Remove event listeners when modal is closed
+        elements.saveTaskChangesBtn.removeEventListener('click', saveChanges);
+        elements.deleteTaskBtn.removeEventListener('click', onDeleteTask);
+        elements.cancelEditBtn.removeEventListener('click', cancelEdit);
+    };
+
+    elements.saveTaskChangesBtn.addEventListener('click', saveChanges);
+
     // Delete task using a helper function and close the task modal
-    elements.deleteTaskBtn.addEventListener('click', () => {
+    const onDeleteTask = () => {
         deleteTask(task.id);
         toggleModal(false, elements.editTaskModal);
+        console.log('from openEditTaskModal');
         refreshTasksUI();
-    });
 
-    // Show the edit task modal
-    toggleModal(true, elements.editTaskModal);
+        // Remove event listeners when modal is closed
+        elements.deleteTaskBtn.removeEventListener('click', onDeleteTask);
+        elements.saveTaskChangesBtn.removeEventListener('click', saveChanges);
+        elements.cancelEditBtn.removeEventListener('click', cancelEdit);
+    };
+
+    elements.deleteTaskBtn.addEventListener('click', onDeleteTask);
+
+    // Cancel editing task event listener
+    //const cancelEditBtn = document.getElementById('cancel-edit-btn');
+
+    const cancelEdit = () => {
+        toggleModal(false, elements.editTaskModal);
+
+        // Remove event listeners when modal is closed
+        elements.deleteTaskBtn.removeEventListener('click', onDeleteTask);
+        elements.saveTaskChangesBtn.removeEventListener('click', saveChanges);
+        elements.cancelEditBtn.removeEventListener('click', cancelEdit);
+    };
+
+    elements.cancelEditBtn.addEventListener('click', cancelEdit);
 }
 
 function saveTaskChanges(taskId) {
