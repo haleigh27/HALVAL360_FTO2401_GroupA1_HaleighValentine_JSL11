@@ -280,52 +280,45 @@ function toggleTheme() {
 function openEditTaskModal(task) {
     // Show the edit task modal
     toggleModal(true, elements.editTaskModal);
-    //TODO: Add the filterDiv later
-    //elements.filterDiv.style.display = 'block';
+    //Add the filterDiv overlay
+    elements.filterDiv.style.display = 'block';
 
     // Set task details in modal inputs
-    elements.editTaskTitle.value = task.title; // .value also works
+    elements.editTaskTitle.value = task.title;
     elements.editTaskDesc.value = task.description;
     elements.editSelectStatus.value = task.status;
 
     // Call saveTaskChanges upon click of Save Changes button
     const saveChanges = () => {
         saveTaskChanges(task.id);
-        toggleModal(false, elements.editTaskModal);
-
-        // Remove event listeners when modal is closed
-        elements.saveTaskChangesBtn.removeEventListener('click', saveChanges);
-        elements.deleteTaskBtn.removeEventListener('click', onDeleteTask);
-        elements.cancelEditBtn.removeEventListener('click', cancelEdit);
+        closeModal();
     };
-
     elements.saveTaskChangesBtn.addEventListener('click', saveChanges);
 
     // Delete task using a helper function and close the task modal
     const onDeleteTask = () => {
-        deleteTask(task.id);
-        toggleModal(false, elements.editTaskModal);
+        deleteTask(task.id); //Imported function
+        closeModal();
         refreshTasksUI();
-
-        // Remove event listeners when modal is closed
-        elements.deleteTaskBtn.removeEventListener('click', onDeleteTask);
-        elements.saveTaskChangesBtn.removeEventListener('click', saveChanges);
-        elements.cancelEditBtn.removeEventListener('click', cancelEdit);
     };
-
     elements.deleteTaskBtn.addEventListener('click', onDeleteTask);
 
     // Cancel editing task
     const cancelEdit = () => {
+        closeModal();
+    };
+    elements.cancelEditBtn.addEventListener('click', cancelEdit);
+
+    //Close modal and remove event listeners
+    const closeModal = () => {
         toggleModal(false, elements.editTaskModal);
+        elements.filterDiv.style.display = 'none'; // Hide the filter overlay
 
         // Remove event listeners when modal is closed
-        elements.deleteTaskBtn.removeEventListener('click', onDeleteTask);
         elements.saveTaskChangesBtn.removeEventListener('click', saveChanges);
+        elements.deleteTaskBtn.removeEventListener('click', onDeleteTask);
         elements.cancelEditBtn.removeEventListener('click', cancelEdit);
     };
-
-    elements.cancelEditBtn.addEventListener('click', cancelEdit);
 }
 
 function saveTaskChanges(taskId) {
