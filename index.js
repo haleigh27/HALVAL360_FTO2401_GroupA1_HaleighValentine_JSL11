@@ -22,25 +22,35 @@ function initializeData() {
 const elements = {
     headerBoardName: document.querySelector('.header-board-name'), //both class and id
     columnDivs: document.querySelectorAll('.column-div'),
-    editTaskModal: document.querySelector('.edit-task-modal-window'),
+
+    //Styling div
     filterDiv: document.querySelector('#filterDiv'),
-    hideSideBarBtn: document.querySelector('#hide-side-bar-btn'),
-    showSideBarBtn: document.querySelector('#show-side-bar-btn'),
-    themeSwitch: document.querySelector('#switch'),
-    createNewTaskBtn: document.querySelector('#create-task-btn'),
-    modalWindow: document.querySelector('.modal-window'),
+
     //Elements for toggleSidebar function
     sideBar: document.querySelector('.side-bar'),
+    hideSideBarBtn: document.querySelector('#hide-side-bar-btn'),
+    showSideBarBtn: document.querySelector('#show-side-bar-btn'),
+    hideSideBarDiv: document.querySelector('.hide-side-bar-div'),
+
     //Element for Add New task btn
     addNewTaskBtn: document.querySelector('#add-new-task-btn'),
+
     //Elements for new task input fields
+    createNewTaskBtn: document.querySelector('#create-task-btn'),
+    modalWindow: document.querySelector('.modal-window'),
+
     titleInput: document.querySelector('#title-input'),
     descInput: document.querySelector('#desc-input'),
     selectStatus: document.querySelector('#select-status'),
+
     //Elements use to change theme
+    themeSwitch: document.querySelector('#switch'),
+
     body: document.querySelector('body'),
     logo: document.querySelector('#logo'),
     //Elements to edit task
+    editTaskModal: document.querySelector('.edit-task-modal-window'),
+
     editTaskTitle: document.querySelector('#edit-task-title-input'),
     editTaskDesc: document.querySelector('#edit-task-desc-input'),
     editSelectStatus: document.querySelector('#edit-select-status'),
@@ -261,10 +271,12 @@ function toggleSidebar(show) {
     if (show) {
         elements.sideBar.style.display = 'flex';
         elements.showSideBarBtn.style.display = 'none';
+        elements.hideSideBarDiv.style.display = 'flex'; // Displays Hide Sidebar button on smaller
         localStorage.setItem('showSideBar', 'true');
     } else {
         elements.sideBar.style.display = 'none';
         elements.showSideBarBtn.style.display = 'block';
+        elements.showSideBarBtn.style.position = 'fixed'; // Button wont move when scrolling on smaller screens
         localStorage.setItem('showSideBar', 'false');
     }
 }
