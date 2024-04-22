@@ -259,7 +259,7 @@ function addTask(event) {
 
 function toggleSidebar(show) {
     if (show) {
-        elements.sideBar.style.display = 'block';
+        elements.sideBar.style.display = 'flex';
         elements.showSideBarBtn.style.display = 'none';
         localStorage.setItem('showSideBar', 'true');
     } else {
