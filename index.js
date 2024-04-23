@@ -1,7 +1,7 @@
-// TASK: import helper functions from utils
+// Import helper functions from utils
 import { getTasks, createNewTask, patchTask, putTask, deleteTask } from './utils/taskFunctions.js';
 
-// TASK: import initialData
+// Import initialData
 import { initialData } from './initialData.js';
 
 /*************************************************************************************************************************************************
@@ -18,10 +18,10 @@ function initializeData() {
     }
 }
 
-// TASK: Get elements from the DOM
+// Elements from the DOM
 const elements = {
     //Elements for HTML structure
-    headerBoardName: document.querySelector('.header-board-name'), //both class and id
+    headerBoardName: document.querySelector('.header-board-name'), //Element has both class and id
     columnDivs: document.querySelectorAll('.column-div'),
 
     //Styling div
@@ -65,12 +65,11 @@ const elements = {
 let activeBoard = '';
 
 // Extracts unique board names from tasks
-// TASK: FIX BUGS
 function fetchAndDisplayBoardsAndTasks() {
     // -- FETCH BOARDS --
-    const tasks = getTasks(); // * Returns an array of task objects in local storage
-    const boards = [...new Set(tasks.map((task) => task.board).filter(Boolean))]; // * Array of unique boards
-    displayBoards(boards); // * Array of unique boards in local storage
+    const tasks = getTasks(); // Helper function which returns an array of task objects from local storage
+    const boards = [...new Set(tasks.map((task) => task.board).filter(Boolean))]; // Array of unique boards
+    displayBoards(boards); // Displays unique boards from local storage
     if (boards.length > 0) {
         const localStorageBoard = localStorage.getItem('activeBoard');
         activeBoard = localStorageBoard ? localStorageBoard : boards[0];
@@ -83,9 +82,8 @@ function fetchAndDisplayBoardsAndTasks() {
 }
 
 // Creates different boards in the DOM
-// TASK: Fix Bugs
 function displayBoards(boards) {
-    // * boards parameter is an array of unique boards in local storage
+    // boards parameter is an array of unique boards from local storage
     const boardsContainer = document.getElementById('boards-nav-links-div');
     boardsContainer.innerHTML = ''; // Clears the container which holds the boards in the side-panel
     boards.forEach((board) => {
@@ -94,9 +92,9 @@ function displayBoards(boards) {
         boardElement.classList.add('board-btn');
         boardElement.addEventListener('click', () => {
             elements.headerBoardName.textContent = board;
-            filterAndDisplayTasksByBoard(board);
-            activeBoard = board; //assigns active board
-            localStorage.setItem('activeBoard', activeBoard);
+            filterAndDisplayTasksByBoard(board); // Filters tasks corresponding to the board name and displays them on the DOM.
+            activeBoard = board; // Updates activeBoard to board clicked
+            localStorage.setItem('activeBoard', activeBoard); // Resets activeBoard in localStorage
             styleActiveBoard(activeBoard);
         });
         boardsContainer.appendChild(boardElement);
@@ -104,15 +102,11 @@ function displayBoards(boards) {
 }
 
 // Filters tasks corresponding to the board name and displays them on the DOM.
-// TASK: Fix Bugs
 function filterAndDisplayTasksByBoard(boardName) {
     const tasks = getTasks(); // Fetch tasks from a simulated local storage function
-    const filteredTasks = tasks.filter((task) => task.board === boardName); // * Returns an array of all tasks with matching board value
+    const filteredTasks = tasks.filter((task) => task.board === boardName); // Returns an array of all tasks with matching board value
 
-    //TODO:
-    // Ensure the column titles are set outside of this function or correctly initialized before this function runs
-
-    //FIXME: Overrides the current innerHTML content of the status headings, dot and tasks-container
+    // Reloads innerHTML content of the status headings, dot and tasks-container to display new data in local storage
     elements.columnDivs.forEach((column) => {
         const status = column.getAttribute('data-status');
         // Reset column content while preserving the column title
@@ -125,7 +119,6 @@ function filterAndDisplayTasksByBoard(boardName) {
         tasksContainer.classList.add('tasks-container');
         column.appendChild(tasksContainer);
 
-        //New innerHTML ends here
         filteredTasks
             .filter((task) => task.status === status)
             .forEach((task) => {
@@ -136,7 +129,7 @@ function filterAndDisplayTasksByBoard(boardName) {
 
                 // Listen for a click event on each task and open a modal
                 taskElement.addEventListener('click', () => {
-                    openEditTaskModal(task); // task object of selected task
+                    openEditTaskModal(task); // task argument is an object of selected task
                 });
 
                 tasksContainer.appendChild(taskElement);
@@ -149,7 +142,6 @@ function refreshTasksUI() {
 }
 
 // Styles the active board by adding an active class
-// TASK: Fix Bugs
 function styleActiveBoard(boardName) {
     document.querySelectorAll('.board-btn').forEach((btn) => {
         if (btn.textContent === boardName) {
@@ -161,7 +153,7 @@ function styleActiveBoard(boardName) {
 }
 
 function addTaskToUI(task) {
-    //* task is the new task object
+    // task parameter is the new task object
     const column = document.querySelector(`.column-div[data-status="${task.status}"]`);
     if (!column) {
         console.error(`Column not found for status: ${task.status}`);
@@ -225,7 +217,6 @@ function setupEventListeners() {
 }
 
 // Toggles tasks modal
-// Task: Fix bugs
 function toggleModal(show, modal = elements.modalWindow) {
     modal.style.display = show ? 'block' : 'none';
 }
@@ -245,7 +236,7 @@ function addTask(event) {
         board: localStorage.getItem('activeBoard'),
     };
 
-    const newTask = task.title ? createNewTask(task) : alert('Please insert a task.'); // Returns the newTask object with id property.
+    const newTask = task.title ? createNewTask(task) : alert('Please insert a task.'); // Returns the newTask object with id property added.
     if (newTask && newTask.title) {
         addTaskToUI(newTask);
         toggleModal(false);
@@ -327,7 +318,6 @@ function openEditTaskModal(task) {
 function saveTaskChanges(taskId) {
     // Object with the updated task details
     const updatedTask = {
-        //id: taskId, TODO: remove
         title: elements.editTaskTitle.value,
         description: elements.editTaskDesc.value,
         status: elements.editSelectStatus.value,
@@ -335,12 +325,11 @@ function saveTaskChanges(taskId) {
     };
 
     // Update task using a helper function
-    patchTask(taskId, updatedTask); // TODO: Remember to remove id property from updatedTask object and run refreshTaskUI()
+    patchTask(taskId, updatedTask);
 
     // Close the modal and refresh the UI to reflect the changes
     toggleModal(false, elements.editTaskModal);
-
-    refreshTasksUI(); //need this line to refresh task UI when using patchTask() as it does not use location.reload()
+    refreshTasksUI();
 }
 
 /*************************************************************************************************************************************************/
