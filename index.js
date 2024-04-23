@@ -245,8 +245,8 @@ function addTask(event) {
         board: localStorage.getItem('activeBoard'),
     };
 
-    const newTask = createNewTask(task); // Returns the newTask object with id property.
-    if (newTask) {
+    const newTask = task.title ? createNewTask(task) : alert('Please insert a task.'); // Returns the newTask object with id property.
+    if (newTask && newTask.title) {
         addTaskToUI(newTask);
         toggleModal(false);
         elements.filterDiv.style.display = 'none'; // Also hide the filter overlay
