@@ -195,7 +195,8 @@ function setupEventListeners() {
 
     // Clicking outside the modal to close it
     elements.filterDiv.addEventListener('click', () => {
-        toggleModal(false);
+        toggleModal(false); // Closes Add New Task Modal
+        toggleModal(false, elements.editTaskModal); // Closes Edit Task modal
         elements.filterDiv.style.display = 'none'; // Also hide the filter overlay
         elements.modalWindow.reset(); // Reset modal form
     });
