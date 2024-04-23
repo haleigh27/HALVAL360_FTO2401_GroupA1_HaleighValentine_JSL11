@@ -250,7 +250,7 @@ function toggleSidebar(show) {
     if (show) {
         elements.sideBar.style.display = 'flex';
         elements.showSideBarBtn.style.display = 'none';
-        elements.hideSideBarDiv.style.display = 'flex'; // Displays Hide Sidebar button on smaller screens (TODO:change to mediaQuery??)
+        elements.hideSideBarDiv.style.display = 'flex'; // Displays Hide Sidebar button on smaller screens as well
         localStorage.setItem('showSideBar', 'true');
     } else {
         elements.sideBar.style.display = 'none';
