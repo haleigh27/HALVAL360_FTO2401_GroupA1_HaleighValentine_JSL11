@@ -190,12 +190,14 @@ function setupEventListeners() {
     cancelAddTaskBtn.addEventListener('click', () => {
         toggleModal(false);
         elements.filterDiv.style.display = 'none'; // Also hide the filter overlay
+        elements.modalWindow.reset(); // Reset modal form when canceling
     });
 
     // Clicking outside the modal to close it
     elements.filterDiv.addEventListener('click', () => {
         toggleModal(false);
         elements.filterDiv.style.display = 'none'; // Also hide the filter overlay
+        elements.modalWindow.reset(); // Reset modal form
     });
 
     // Show sidebar event listener
