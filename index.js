@@ -63,6 +63,11 @@ const elements = {
 
     //Elements for responsive design
     logoMobile: document.querySelector('.logo-mobile'),
+
+    //Elements for Adding a task on a new board
+    editBoardBtn: document.querySelector('#edit-board-btn'),
+    boardBtn: document.querySelectorAll('.board-btn'),
+    boardsNavLinksDiv: document.querySelector('#boards-nav-links-div'),
 };
 
 let activeBoard = '';
@@ -183,6 +188,7 @@ function setupEventListeners() {
     // Cancel adding new task event listener
     const cancelAddTaskBtn = document.getElementById('cancel-add-task-btn');
     cancelAddTaskBtn.addEventListener('click', () => {
+        toggleItemInNewBoardModal(false); // New Board: Closes modal which adds a new board
         toggleModal(false);
         elements.filterDiv.style.display = 'none'; // Also hide the filter overlay
         elements.modalWindow.reset(); // Reset modal form when canceling
@@ -220,11 +226,43 @@ function setupEventListeners() {
     elements.modalWindow.addEventListener('submit', (event) => {
         addTask(event);
     });
+
+    //New Board: Event listener to add a task with a new board
+    elements.editBoardBtn.addEventListener('click', () => {
+        toggleItemInNewBoardModal(true);
+        elements.filterDiv.style.display = 'block'; // Also show the filter overlay
+    });
 }
 
 // Toggles tasks modal
 function toggleModal(show, modal = elements.modalWindow) {
     modal.style.display = show ? 'block' : 'none';
+}
+
+//New Board: Creating input field and adding it to task modal
+const newBoardDiv = document.createElement('div');
+newBoardDiv.style.display = 'none'; // don't display initially
+newBoardDiv.className = 'input-div';
+elements.modalWindow.insertBefore(newBoardDiv, elements.modalWindow.children[4]);
+const newBoardLabel = document.createElement('label');
+newBoardLabel.textContent = 'New Board Name';
+newBoardLabel.className = 'label-modal-window';
+newBoardLabel.id = 'modal-new-board';
+newBoardLabel.setAttribute('for', 'newBoard');
+newBoardDiv.appendChild(newBoardLabel);
+const newBoardInput = document.createElement('input');
+newBoardInput.type = 'text';
+newBoardInput.className = 'modal-input';
+newBoardInput.id = 'newBoard';
+newBoardInput.placeholder = 'Enter a new board';
+newBoardInput.style.border = '2px solid #219c90';
+newBoardDiv.appendChild(newBoardInput);
+
+// New Board: Opens and closes the modal to load a task with a new board
+function toggleItemInNewBoardModal(show) {
+    elements.modalWindow.style.display = show ? 'block' : 'none'; // Display add new task modal
+    newBoardDiv.style.display = show ? 'flex' : 'none'; // Modify modal with input for a new board
+    newBoardInput.required = show ? true : false; // Adds and removes a required attribute
 }
 
 /*************************************************************************************************************************************************
@@ -233,6 +271,12 @@ function toggleModal(show, modal = elements.modalWindow) {
 
 function addTask(event) {
     event.preventDefault();
+
+    // New Board: Sets new activeBoard in local storage
+    if (newBoardInput.value && elements.titleInput.value) {
+        localStorage.setItem('activeBoard', newBoardInput.value);
+        //activeBoard = newBoardInput.value
+    }
 
     //Assign user input to the task object
     const task = {
@@ -246,9 +290,11 @@ function addTask(event) {
     if (newTask && newTask.title) {
         addTaskToUI(newTask);
         toggleModal(false);
+        toggleItemInNewBoardModal(false); // New Board: Closes modal
         elements.filterDiv.style.display = 'none'; // Also hide the filter overlay
         event.target.reset();
         refreshTasksUI();
+        fetchAndDisplayBoardsAndTasks(); // New Board: Displays new board
     }
 }
 
@@ -303,7 +349,7 @@ function openEditTaskModal(task) {
 
     // Delete task using a helper function and close the task modal
     const confirmDeleteTask = () => {
-        const confirmed = window.confirm(`Are you sure you want to delete the task ${task.title}?`);
+        const confirmed = window.confirm(`Are you sure you want to delete the task "${task.title}"?`);
         if (confirmed) {
             deleteTask(task.id); //Imported function
             closeModal();
