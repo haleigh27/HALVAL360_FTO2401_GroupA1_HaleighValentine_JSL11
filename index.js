@@ -60,6 +60,9 @@ const elements = {
     saveTaskChangesBtn: document.querySelector('#save-task-changes-btn'),
     cancelEditBtn: document.querySelector('#cancel-edit-btn'),
     deleteTaskBtn: document.querySelector('#delete-task-btn'),
+
+    //Elements for responsive design
+    logoMobile: document.querySelector('.logo-mobile'),
 };
 
 let activeBoard = '';
@@ -196,6 +199,9 @@ function setupEventListeners() {
     // Show sidebar event listener
     elements.hideSideBarBtn.addEventListener('click', () => {
         toggleSidebar(false);
+        if (mq480px.matches && elements.filterDiv.style.display === 'block') {
+            elements.filterDiv.style.display = 'none';
+        }
     });
     elements.showSideBarBtn.addEventListener('click', () => {
         toggleSidebar(true);
@@ -252,6 +258,12 @@ function toggleSidebar(show) {
         elements.showSideBarBtn.style.display = 'none';
         elements.hideSideBarDiv.style.display = 'flex'; // Displays Hide Sidebar button on smaller screens as well
         localStorage.setItem('showSideBar', 'true');
+        if (mq480px.matches) {
+            elements.filterDiv.style.display = 'block';
+            elements.filterDiv.addEventListener('click', () => {
+                toggleSidebar(false);
+            });
+        }
     } else {
         elements.sideBar.style.display = 'none';
         elements.showSideBarBtn.style.display = 'block';
@@ -350,4 +362,13 @@ function init() {
         elements.logo.src = '/assets/logo-light.svg';
     }
     fetchAndDisplayBoardsAndTasks(); // Initial display of boards and tasks
+}
+
+// Responsiveness
+
+let mq480px = window.matchMedia('(max-width: 480px)');
+let mq800px = window.matchMedia('(max-width: 800px)');
+
+if (mq480px.matches) {
+    elements.logoMobile.style.display = 'none';
 }
