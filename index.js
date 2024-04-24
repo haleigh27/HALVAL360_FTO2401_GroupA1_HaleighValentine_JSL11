@@ -302,12 +302,15 @@ function openEditTaskModal(task) {
     elements.saveTaskChangesBtn.addEventListener('click', saveChanges);
 
     // Delete task using a helper function and close the task modal
-    const onDeleteTask = () => {
-        deleteTask(task.id); //Imported function
-        closeModal();
-        refreshTasksUI();
+    const confirmDeleteTask = () => {
+        const confirmed = window.confirm(`Are you sure you want to delete the task ${task.title}?`);
+        if (confirmed) {
+            deleteTask(task.id); //Imported function
+            closeModal();
+            refreshTasksUI();
+        }
     };
-    elements.deleteTaskBtn.addEventListener('click', onDeleteTask);
+    elements.deleteTaskBtn.addEventListener('click', confirmDeleteTask);
 
     // Cancel editing task
     const cancelEdit = () => {
@@ -322,7 +325,7 @@ function openEditTaskModal(task) {
 
         // Remove event listeners when modal is closed
         elements.saveTaskChangesBtn.removeEventListener('click', saveChanges);
-        elements.deleteTaskBtn.removeEventListener('click', onDeleteTask);
+        elements.deleteTaskBtn.removeEventListener('click', confirmDeleteTask);
         elements.cancelEditBtn.removeEventListener('click', cancelEdit);
     };
 }
