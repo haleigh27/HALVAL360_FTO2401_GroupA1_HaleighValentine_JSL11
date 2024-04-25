@@ -1,5 +1,5 @@
 // Import helper functions from utils
-import { getTasks, createNewTask, patchTask, putTask, deleteTask } from './utils/taskFunctions.js';
+import { getTasks, createNewTask, patchTask, deleteTask } from './utils/taskFunctions.js';
 
 // Import initialData
 import { initialData } from './initialData.js';
@@ -85,7 +85,7 @@ function fetchAndDisplayBoardsAndTasks() {
         localStorage.setItem('activeBoard', activeBoard);
         elements.headerBoardName.textContent = activeBoard;
         styleActiveBoard(activeBoard);
-        refreshTasksUI();
+        refreshTasksUI(); // Just calls filterAndDisplayTasksByBoard(activeBoard)
     }
 }
 
