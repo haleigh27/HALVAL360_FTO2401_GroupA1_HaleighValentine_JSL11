@@ -2,9 +2,9 @@
 
 ### Project Links
 
-[link 1 of 5 - Video 1 (Approach, loading and init function)](https://www.loom.com/share/da5c278a74fa4d7b8cada6876837ee5a)
+[Link 1 of 5 - Video 1 (Approach, loading and init function)](https://www.loom.com/share/da5c278a74fa4d7b8cada6876837ee5a)
 
-[link 2 of 5 - Code run through until the end of toggleModal()](https://www.loom.com/share/f0c7174a3a604dc4b119e9f035bed79c)
+[Link 2 of 5 - Code run through until the end of toggleModal()](https://www.loom.com/share/f0c7174a3a604dc4b119e9f035bed79c)
 
 [Link 3 of 5 - Add New Task:](https://www.loom.com/share/9da6f103f048401f8c6b93be8a162b66)
 
