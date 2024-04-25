@@ -2,20 +2,15 @@
 
 ### Project Links
 
-[link 1 of 5 - Video 1 (Approach, loading and init function)]
-https://www.loom.com/share/da5c278a74fa4d7b8cada6876837ee5a
+[link 1 of 5 - Video 1 (Approach, loading and init function)](https://www.loom.com/share/da5c278a74fa4d7b8cada6876837ee5a)
 
-[link 2 of 5 - Code run through until the end of toggleModal()]
-https://www.loom.com/share/f0c7174a3a604dc4b119e9f035bed79c
+[link 2 of 5 - Code run through until the end of toggleModal()](https://www.loom.com/share/f0c7174a3a604dc4b119e9f035bed79c)
 
-[Link 3 of 5 - Add New Task:]
-https://www.loom.com/share/9da6f103f048401f8c6b93be8a162b66
+[Link 3 of 5 - Add New Task:](https://www.loom.com/share/9da6f103f048401f8c6b93be8a162b66)
 
-[Link 4 of 5 - Editing a task:]
-https://www.loom.com/share/aa0adb2aee604880a46427665a3d20a7
+[Link 4 of 5 - Editing a task:](https://www.loom.com/share/aa0adb2aee604880a46427665a3d20a7)
 
-[Link 5 of 5 - Responsive Design:]
-https://www.loom.com/share/46f4c1b8a1f24820b168e8b045c3435b
+[Link 5 of 5 - Responsive Design:](https://www.loom.com/share/46f4c1b8a1f24820b168e8b045c3435b)
 
 Welcome to the Agile Board project, the final project for the JSL course! In this portfolio piece project, you will be stepping into the shoes of a juniour developer tasked with bringing a Kanban Task Management App to life. You're not starting from scratch, though. In this project, you are tasked with tackling the provided user stories to both identify and fix bugs in the code, as well as to develop your own functions to extend the application's capabilities. Key assignments include importing utility functions, initializing data, and diving into debugging tasks such as setting up data correctly in local storage, dynamically displaying boards and tasks, and enhancing user interactions.
 
